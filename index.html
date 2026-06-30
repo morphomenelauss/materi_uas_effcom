@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Belajar Effective Communication</title>
+<style>
+  :root{
+    --orange:#D97757;
+    --orange-dark:#BD5E3D;
+    --orange-light:#FBEAE3;
+    --bg:#FAF9F6;
+    --text:#2B2823;
+    --muted:#6B6358;
+    --border:#EBE5DD;
+    --white:#FFFFFF;
+    --shadow:0 1px 3px rgba(43,40,35,.06), 0 6px 16px rgba(43,40,35,.05);
+    --shadow-hover:0 4px 10px rgba(217,119,87,.12), 0 10px 24px rgba(43,40,35,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background:
+      radial-gradient(circle at 0% 0%, var(--orange-light) 0%, transparent 45%),
+      var(--bg);
+    color:var(--text);
+    line-height:1.6;
+  }
+  .layout{display:flex; min-height:100vh;}
+
+  /* Sidebar */
+  nav{
+    width:260px; background:var(--white); border-right:1px solid var(--border);
+    padding:28px 18px; position:sticky; top:0; height:100vh; overflow-y:auto;
+    flex-shrink:0; box-shadow:2px 0 12px rgba(43,40,35,.04);
+  }
+  nav h1{font-size:19px; color:var(--orange-dark); margin-bottom:4px; letter-spacing:-.2px;}
+  nav .sub{font-size:12px; color:var(--muted); margin-bottom:22px;}
+  nav button{
+    display:block; width:100%; text-align:left; background:none; border:none;
+    padding:11px 14px; border-radius:10px; font-size:14px; color:var(--text);
+    cursor:pointer; margin-bottom:4px; transition:all .18s ease;
+    border-left:3px solid transparent;
+  }
+  nav button:hover{background:var(--orange-light); transform:translateX(2px);}
+  nav button.active{background:var(--orange); color:#fff; font-weight:600; border-left:3px solid var(--orange-dark); box-shadow:0 4px 10px rgba(217,119,87,.3);}
+
+  main{flex:1; padding:44px 52px; max-width:880px;}
+  section{display:none;}
+  section.active{display:block; animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  h2{color:var(--orange-dark); font-size:30px; margin-bottom:6px; letter-spacing:-.3px;}
+  h3{color:var(--orange-dark); font-size:18px; margin:26px 0 10px; padding-left:10px; border-left:3px solid var(--orange);}
+  p.lead{color:var(--muted); margin-bottom:26px; font-size:14.5px;}
+  .card{
+    background:var(--white); border:1px solid var(--border); border-radius:14px;
+    padding:18px 22px; margin-bottom:14px; box-shadow:var(--shadow);
+    transition:box-shadow .2s ease, transform .2s ease;
+  }
+  .card:hover{box-shadow:var(--shadow-hover); transform:translateY(-2px);}
+  .card b{color:var(--orange-dark);}
+  ul{margin-left:18px; margin-bottom:8px;}
+  li{margin-bottom:6px; font-size:14.5px;}
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media(max-width:700px){.grid{grid-template-columns:1fr;}}
+  table{width:100%; border-collapse:collapse; margin:12px 0; font-size:13.5px; border-radius:10px; overflow:hidden; box-shadow:var(--shadow);}
+  th,td{border:1px solid var(--border); padding:10px 12px; text-align:left;}
+  th{background:var(--orange); color:#fff; font-weight:600;}
+  tr:nth-child(even) td{background:var(--orange-light);}
+  .tag{
+    display:inline-block; background:var(--orange); color:#fff;
+    font-size:11px; padding:4px 12px; border-radius:20px; margin-bottom:10px; font-weight:600;
+    letter-spacing:.3px; box-shadow:0 3px 8px rgba(217,119,87,.3);
+  }
+  .quote{
+    border-left:3px solid var(--orange); background:var(--orange-light);
+    padding:14px 18px; font-style:italic; color:var(--orange-dark); border-radius:0 10px 10px 0; margin:14px 0;
+    box-shadow:var(--shadow);
+  }
+  .footer-nav{display:flex; justify-content:space-between; margin-top:36px; padding-top:18px; border-top:1px solid var(--border);}
+  .footer-nav button{background:var(--orange); color:#fff; border:none; padding:10px 20px; border-radius:10px; cursor:pointer; font-size:13px; font-weight:600; box-shadow:0 3px 10px rgba(217,119,87,.3); transition:all .18s ease;}
+  .footer-nav button:hover{background:var(--orange-dark); transform:translateY(-2px); box-shadow:0 6px 14px rgba(217,119,87,.4);}
+  .menu-toggle{display:none;}
+  @media(max-width:800px){
+    nav{position:fixed; left:-270px; z-index:10; transition:left .2s; box-shadow:2px 0 10px rgba(0,0,0,.08);}
+    nav.open{left:0;}
+    main{padding:60px 20px 30px;}
+    .menu-toggle{
+      display:block; position:fixed; top:14px; left:14px; z-index:11;
+      background:var(--orange); color:#fff; border:none; width:38px; height:38px;
+      border-radius:8px; font-size:18px; cursor:pointer; box-shadow:0 3px 10px rgba(217,119,87,.35);
+    }
+  }
+</style>
+</head>
+<body>
+<button class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('open')">☰</button>
+<div class="layout">
+  <nav>
+    <h1>📘 Effective Comm.</h1>
+    <div class="sub">Materi UAS — Ringkasan Belajar</div>
+    <div id="navlist"></div>
+  </nav>
+  <main id="main"></main>
+</div>
+
+<script>
+const data = [
+{
+  id:"tertulis",
+  title:"Komunikasi Tertulis",
+  tag:"Bab 1",
+  lead:"Pentingnya komunikasi tertulis dalam dunia akademik & profesional.",
+  html:`
+  <h3>Latar Belakang</h3>
+  <div class="card">Mifta Thota (2013:160) menegaskan komunikasi adalah elemen fundamental dalam manajemen dan administrasi. Istilah ini berasal dari kata Latin <i>communis</i> yang berarti "bersama" — mencakup transfer pengetahuan, penyampaian gagasan, hingga pertukaran pemikiran melalui media lisan maupun tulisan. Menurut Agus (2003), komunikasi dikelompokkan menjadi lisan, tertulis, dan (versi modern) elektronik.</div>
+  <div class="card">Buruknya komunikasi memicu hambatan manajemen, sedangkan interaksi yang solid antar departemen menciptakan iklim kerja yang sehat dan konstruktif.</div>
+
+  <h3>Definisi Komunikasi Tertulis</h3>
+  <div class="card">Segala jenis pertukaran informasi yang memanfaatkan simbol tulisan sebagai perantara — mulai dari surat konvensional, faksimili, hingga e-mail.</div>
+
+  <h3>Tujuan Komunikasi Tertulis</h3>
+  <div class="grid">
+    <div class="card"><b>Informasi</b> — Menyalurkan pengetahuan & agenda belajar secara sistematis (mis. jadwal mingguan).</div>
+    <div class="card"><b>Instruksi</b> — Menyediakan panduan teknis & prosedur kerja agar minim kekeliruan.</div>
+    <div class="card"><b>Evaluasi</b> — Memberikan umpan balik objektif lewat laporan hasil belajar.</div>
+    <div class="card"><b>Dokumentasi</b> — Menciptakan rekam jejak formal (notulensi, arsip) untuk transparansi & akuntabilitas.</div>
+  </div>
+
+  <h3>Karakteristik Komunikasi Tertulis</h3>
+  <ul>
+    <li><b>Daya Tahan (Permanensi)</b> — pesan bersifat tetap & terdokumentasi.</li>
+    <li><b>Persiapan Matang</b> — butuh waktu lebih lama, memperhatikan tata bahasa & struktur.</li>
+    <li><b>Satu Arah (Delayed Feedback)</b> — umpan balik tidak instan.</li>
+    <li><b>Presisi & Jelas</b> — tanpa bantuan nada suara/ekspresi wajah, kata harus akurat.</li>
+  </ul>
+
+  <h3>Jenis-Jenis Komunikasi Tertulis</h3>
+  <table>
+    <tr><th>Dunia Akademik</th><th>Dunia Profesional</th></tr>
+    <tr><td>Makalah/Paper — tulisan ilmiah berargumen</td><td>Surat Resmi/Email — komunikasi formal antar individu/institusi</td></tr>
+    <tr><td>Laporan Penelitian — dokumen hasil riset sistematis</td><td>Laporan Kerja — dokumen pertanggungjawaban pekerjaan</td></tr>
+    <tr><td>Skripsi/Tesis/Disertasi — karya ilmiah gelar akademik</td><td>Proposal Bisnis — rencana kerja sama/proyek</td></tr>
+    <tr><td>Abstrak — ringkasan singkat karya ilmiah</td><td>Memo Internal — pesan singkat dalam organisasi</td></tr>
+    <tr><td>Esai Akademik — argumen/analisis berbasis teori & fakta</td><td>Kontrak & SOP — dokumen hukum & prosedur kerja</td></tr>
+  </table>
+
+  <h3>Jenis Komunikasi Tertulis Dunia Profesional (Lengkap)</h3>
+  <ul>
+    <li><b>Email Bisnis</b> — alat komunikasi harian utama; ringkas, formal, subject line jelas.</li>
+    <li><b>Memo (Memorandum)</b> — pesan internal formal untuk mengumumkan kebijakan/perubahan regulasi.</li>
+    <li><b>Proposal Bisnis</b> — dokumen persuasif menawarkan solusi/produk untuk menarik klien.</li>
+    <li><b>Laporan Bisnis & Kinerja</b> — penyajian data faktual (keuangan, analisis pasar, progres proyek).</li>
+    <li><b>SOP (Standard Operating Procedure)</b> — panduan langkah demi langkah agar operasional konsisten & aman.</li>
+    <li><b>Konten & Dokumen Pemasaran</b> — copywriting, konten medsos, press release untuk mendorong konversi.</li>
+  </ul>
+
+  <h3>Fungsi & Manfaat</h3>
+  <ul>
+    <li><b>Dokumentasi</b> — menyimpan informasi permanen & terstruktur.</li>
+    <li><b>Koordinasi</b> — menyeragamkan pemahaman dalam organisasi.</li>
+    <li><b>Penyebaran Informasi</b> — menjangkau banyak pihak bersamaan.</li>
+    <li><b>Pengembangan Ilmu</b> — media penyebaran pengetahuan & hasil penelitian.</li>
+    <li><b>Bukti & Legalitas</b> — sah secara hukum & dapat dipertanggungjawabkan, sekaligus mendorong berpikir kritis & terorganisir.</li>
+  </ul>
+
+  <h3>Struktur Dokumen</h3>
+  <div class="grid">
+    <div class="card"><b>Dokumen Profesional</b><ul><li>Kepala surat/identitas</li><li>Tujuan dokumen</li><li>Isi utama</li><li>Penutup</li><li>Lampiran/tanda tangan</li></ul></div>
+    <div class="card"><b>Dokumen Akademik</b><ul><li>Judul</li><li>Pendahuluan</li><li>Pembahasan</li><li>Kesimpulan</li><li>Daftar pustaka</li></ul></div>
+  </div>
+
+  <h3>Format Penulisan</h3>
+  <ul>
+    <li>Font formal (Times New Roman/Arial), ukuran 11–12 pt</li>
+    <li>Spasi 1,5 atau 2</li>
+    <li>Heading & subheading jelas</li>
+    <li>Penulisan rapi & terstruktur</li>
+  </ul>
+
+  <h3>Prinsip Penulisan Efektif</h3>
+  <div class="card">Penulisan efektif adalah cara menyampaikan pesan secara jelas & tepat agar pembaca langsung memahami maksud penulis — penting untuk menghindari kesalahpahaman, membangun kepercayaan, dan memastikan pesan tersampaikan sesuai tujuan.</div>
+  <ul>
+    <li><b>Pemahaman terhadap Pembaca</b> — sesuaikan isi dengan latar belakang pembaca.</li>
+    <li><b>Ketepatan Bahasa & Pemilihan Kata</b> — kalimat tidak berbelit-belit.</li>
+    <li><b>Etika dalam Penulisan</b> — informasi benar & dapat dipertanggungjawabkan.</li>
+    <li><b>Kesesuaian Gaya Penulisan dengan Konteks</b> — makalah ilmiah formal, email sopan, proposal terstruktur.</li>
+  </ul>
+
+  <h3>Kesalahan Umum dalam Komunikasi Tertulis</h3>
+  <ul>
+    <li>Bahasa kurang jelas/bertele-tele/ambigu</li>
+    <li>Kesalahan ejaan & tata bahasa (typo, tanda baca)</li>
+    <li>Pemilihan kata tidak sesuai (terlalu santai/kurang sopan)</li>
+    <li>Informasi tidak lengkap (waktu, tujuan, instruksi hilang)</li>
+    <li>Tidak memperhatikan struktur penulisan (tanpa pembukaan-isi-penutup)</li>
+  </ul>
+
+  <h3>Ciri-Ciri Komunikasi Tertulis yang Baik</h3>
+  <ul>
+    <li>✔ Jelas dan mudah dipahami</li>
+    <li>✔ Singkat, padat, tidak bertele-tele</li>
+    <li>✔ Bahasa baku dan sopan</li>
+    <li>✔ Disusun sistematis</li>
+    <li>✔ Isi sesuai tujuan dan pembaca</li>
+  </ul>
+
+  <h3>Implementasi dalam Portofolio</h3>
+  <div class="card">Portofolio adalah bentuk implementasi komunikasi tertulis yang baik — memuat latar belakang pendidikan, spesialisasi, tools yang dikuasai, pengalaman kerja (dengan tahun yang relevan), serta kontak/media sosial agar mudah dihubungi perekrut atau klien.</div>
+
+  <h3>Teknik 5W+1H dalam Penulisan</h3>
+  <div class="card">Sebelum menulis, jawab dulu: <b>What</b> (apa isi pesan), <b>Why</b> (tujuan penulisan), <b>Who</b> (siapa pembaca), <b>When</b> (kapan disampaikan/tenggat), <b>Where</b> (di mana/media apa), <b>How</b> (bagaimana cara penyampaian). Kerangka ini memastikan tulisan tidak melenceng dari tujuan.</div>
+
+  <h3>Prinsip 7C Komunikasi Tertulis</h3>
+  <ul>
+    <li><b>Clear</b> — maksud tunggal, tidak multitafsir</li>
+    <li><b>Concise</b> — hindari kata mubazir & pengulangan</li>
+    <li><b>Concrete</b> — fakta & data spesifik, bukan generalisasi</li>
+    <li><b>Correct</b> — tata bahasa, ejaan, dan data akurat</li>
+    <li><b>Coherent</b> — antar kalimat/paragraf saling berkaitan logis</li>
+    <li><b>Complete</b> — memuat semua informasi yang dibutuhkan pembaca</li>
+    <li><b>Courteous</b> — sopan, menghargai sudut pandang pembaca</li>
+  </ul>
+
+  <h3>Tahapan Proses Menulis</h3>
+  <ul>
+    <li>1. <b>Pra-menulis</b> — riset, kumpulkan data, tentukan tujuan & audiens</li>
+    <li>2. <b>Menyusun Draf</b> — tuangkan gagasan tanpa terlalu fokus pada kesempurnaan</li>
+    <li>3. <b>Revisi</b> — periksa kembali alur logika & kelengkapan isi</li>
+    <li>4. <b>Penyuntingan (Editing)</b> — perbaiki ejaan, tanda baca, & tata bahasa</li>
+    <li>5. <b>Publikasi/Pengiriman</b> — dokumen siap disampaikan ke pembaca</li>
+  </ul>
+
+  <h3>Etika Email Profesional</h3>
+  <ul>
+    <li>Gunakan subject line yang spesifik & informatif</li>
+    <li>Salam pembuka & penutup yang sesuai konteks budaya/organisasi</li>
+    <li>Hindari huruf kapital berlebihan (dianggap "berteriak")</li>
+    <li>Balas email dalam waktu wajar (1x24 jam kerja)</li>
+    <li>Periksa ulang lampiran sebelum mengirim</li>
+  </ul>
+
+  <h3>Perbedaan Bahasa Formal & Informal dalam Tulisan</h3>
+  <table>
+    <tr><th>Aspek</th><th>Formal</th><th>Informal</th></tr>
+    <tr><td>Kosakata</td><td>Baku, sesuai KBBI</td><td>Sehari-hari, bisa slang</td></tr>
+    <tr><td>Struktur Kalimat</td><td>Lengkap (SPOK)</td><td>Sering tidak lengkap</td></tr>
+    <tr><td>Singkatan</td><td>Dihindari/dijelaskan</td><td>Umum digunakan</td></tr>
+    <tr><td>Konteks Pemakaian</td><td>Surat dinas, laporan, skripsi</td><td>Chat, media sosial</td></tr>
+  </table>
+
+  <h3>Kesimpulan & Saran</h3>
+  <ul>
+    <li>Komunikasi tertulis penting dalam dunia akademik & profesional</li>
+    <li>Membantu penyampaian informasi secara jelas & terstruktur</li>
+    <li>Mendukung administrasi, kerja sama, dan citra profesional</li>
+    <li>Mengurangi kesalahpahaman dalam komunikasi</li>
+    <li>Melatih kemampuan berpikir logis, sistematis, dan kritis</li>
+    <li><b>Saran:</b> lakukan revisi & editing sebelum publikasi, pahami EYD/PUEBI, biasakan membaca & menulis rutin, terus kembangkan kemampuan komunikasi tertulis di era digital.</li>
+  </ul>
+  `
+},
+{
+  id:"kepegawaian",
+  title:"Komunikasi Kepegawaian",
+  tag:"Bab 2",
+  lead:"Komunikasi dalam organisasi & lingkungan kerja.",
+  html:`
+  <h3>Pengertian</h3>
+  <div class="card">Proses penyampaian informasi, instruksi, dan pesan di lingkungan organisasi — antara atasan-bawahan, sesama rekan kerja, maupun organisasi dengan pihak luar.</div>
+
+  <h3>Peran Komunikasi dalam Organisasi</h3>
+  <ul>
+    <li><b>Koordinasi antar bagian</b> — agar setiap divisi bekerja selaras</li>
+    <li><b>Pengambilan keputusan</b> — butuh informasi akurat & tepat waktu</li>
+    <li><b>Penyelesaian konflik</b> — masalah internal terselesaikan lebih cepat</li>
+    <li><b>Sosialisasi kebijakan</b> — perubahan aturan dikomunikasikan jelas</li>
+  </ul>
+
+  <h3>Tujuan Komunikasi Kepegawaian</h3>
+  <ul>
+    <li>Menyampaikan informasi tepat sasaran ke seluruh anggota organisasi</li>
+    <li>Meningkatkan produktivitas lewat instruksi kerja yang jelas</li>
+    <li>Membangun hubungan kerja harmonis</li>
+    <li>Mendorong partisipasi aktif pegawai</li>
+  </ul>
+
+  <h3>Jenis Komunikasi: Arah & Media</h3>
+  <div class="grid">
+    <div class="card"><b>Vertikal</b> — atasan ↔ bawahan dalam hierarki organisasi</div>
+    <div class="card"><b>Horizontal</b> — antar pegawai/unit setingkat, untuk koordinasi tugas</div>
+    <div class="card"><b>Diagonal</b> — antar individu unit kerja & tingkat jabatan berbeda</div>
+    <div class="card"><b>Formal vs Informal</b> — jalur resmi (rapat, surat dinas) vs santai (obrolan, diskusi istirahat)</div>
+  </div>
+
+  <h3>Unsur-Unsur Komunikasi Kepegawaian</h3>
+  <ul>
+    <li>Komunikator (Sender)</li>
+    <li>Pesan (Message)</li>
+    <li>Media/Saluran (Channel)</li>
+    <li>Komunikan (Receiver)</li>
+    <li>Umpan Balik (Feedback)</li>
+    <li>Gangguan (Noise)</li>
+  </ul>
+
+  <h3>Model Komunikasi Shannon-Weaver</h3>
+  <div class="card">Model klasik yang menjelaskan komunikasi sebagai proses linear: <b>Sumber → Pesan → Pemancar (Encoder) → Saluran → Penerima (Decoder) → Tujuan</b>, dengan kemungkinan gangguan (noise) di sepanjang saluran. Model ini menjadi dasar memahami mengapa pesan bisa terdistorsi dalam organisasi.</div>
+
+  <h3>Gaya Kepemimpinan & Pengaruhnya pada Komunikasi</h3>
+  <div class="grid">
+    <div class="card"><b>Otoriter</b> — komunikasi satu arah, instruksi tegas, minim diskusi</div>
+    <div class="card"><b>Demokratis</b> — komunikasi dua arah, melibatkan masukan bawahan</div>
+    <div class="card"><b>Laissez-faire</b> — komunikasi longgar, bawahan bebas berinisiatif</div>
+    <div class="card"><b>Transformasional</b> — komunikasi inspiratif, membangun visi bersama</div>
+  </div>
+
+  <h3>Active Listening dalam Kepegawaian</h3>
+  <ul>
+    <li>Memberi perhatian penuh tanpa menyela pembicaraan</li>
+    <li>Mengajukan pertanyaan klarifikasi saat ragu</li>
+    <li>Memberikan respons verbal/nonverbal (mengangguk, "saya paham")</li>
+    <li>Merangkum kembali poin penting sebagai konfirmasi pemahaman</li>
+  </ul>
+
+  <h3>Proses Komunikasi dalam Kerja</h3>
+  <ul>
+    <li>1. Pengirim menyusun pesan</li>
+    <li>2. Pesan disampaikan melalui media komunikasi</li>
+    <li>3. Penerima menerima & menafsirkan pesan</li>
+    <li>4. Penerima memberikan umpan balik</li>
+    <li>5. Pengirim mengevaluasi respons</li>
+  </ul>
+  <div class="quote">Contoh: Atasan memberi instruksi via email → pegawai memahami → pekerjaan dilaksanakan → pegawai melaporkan hasil kerja.</div>
+
+  <h3>Media Komunikasi di Organisasi</h3>
+  <div class="grid">
+    <div class="card"><b>Lisan</b> — rapat, presentasi, diskusi, telepon, video conference</div>
+    <div class="card"><b>Tertulis</b> — surat resmi, memo, laporan, email</div>
+    <div class="card"><b>Digital</b> — WhatsApp, MS Teams, Zoom, Google Meet, Slack</div>
+  </div>
+
+  <h3>Etika & Komunikasi Efektif Atasan-Bawahan</h3>
+  <ul>
+    <li>Sopan santun, jujur & terbuka, menghormati sesama, menjaga kerahasiaan, mendengarkan aktif</li>
+    <li>Kejelasan pesan, keterbukaan, empati, umpan balik, saling menghormati</li>
+  </ul>
+
+  <h3>Hambatan Komunikasi dalam Organisasi</h3>
+  <ul>
+    <li><b>Fisik</b> — gangguan suara, jaringan buruk, jarak lokasi kerja</li>
+    <li><b>Semantik</b> — istilah sulit dipahami, perbedaan makna bahasa</li>
+    <li><b>Psikologis</b> — emosi, stres, kurang percaya diri</li>
+    <li><b>Organisasional</b> — alur komunikasi panjang, kurang koordinasi divisi</li>
+    <li><b>Persepsi</b> — perbedaan cara pandang terhadap masalah</li>
+  </ul>
+
+  <h3>Cara Mengatasi & Strategi Meningkatkan Komunikasi</h3>
+  <ul>
+    <li>Gunakan bahasa jelas, tingkatkan keterbukaan</li>
+    <li>Beri & terima feedback, manfaatkan media yang tepat</li>
+    <li>Bangun budaya kerja saling menghargai</li>
+    <li>Terapkan komunikasi dua arah & active listening</li>
+    <li>Sesuaikan pesan dengan audiens, adakan rapat berkala</li>
+    <li>Manfaatkan teknologi komunikasi secara optimal</li>
+  </ul>
+
+  <h3>Feedback dalam Organisasi</h3>
+  <div class="card">Feedback memastikan pesan dipahami benar & menjadi sarana evaluasi. Manfaat: meningkatkan kinerja, mengurangi kesalahpahaman, membangun hubungan kerja lebih baik, sarana pengembangan diri.</div>
+
+  <h3>Komunikasi Digital di Era Modern</h3>
+  <div class="card">Mempercepat pertukaran informasi & mendukung fleksibilitas kerja. <b>Tantangan:</b> risiko miskomunikasi (tanpa tatap muka), information overload, ancaman keamanan & kerahasiaan data.</div>
+
+  <h3>Studi Kasus</h3>
+  <div class="card">Sebuah perusahaan mengalami keterlambatan proyek akibat kurangnya koordinasi antar manajer & anggota; info perubahan jadwal kerja tidak tersampaikan merata. <b>Solusi:</b> rapat koordinasi mingguan, aplikasi komunikasi internal, sistem feedback berkala. <b>Hasil:</b> komunikasi lebih terstruktur, koordinasi meningkat, target tercapai sesuai jadwal.</div>
+
+  <h3>Membangun Budaya Komunikasi Terbuka</h3>
+  <div class="card">Organisasi dengan budaya komunikasi terbuka (open communication culture) cenderung memiliki tingkat kepercayaan lebih tinggi antar pegawai, lebih cepat mendeteksi masalah, dan lebih adaptif terhadap perubahan. Elemen kuncinya: transparansi kebijakan, kanal pengaduan yang aman, serta kepemimpinan yang mudah diakses (open-door policy).</div>
+
+  <h3>Pengaruh terhadap Kinerja & Kerja Tim</h3>
+  <ul>
+    <li>Meningkatkan produktivitas & mengurangi kesalahan tugas</li>
+    <li>Meningkatkan motivasi & kepuasan kerja</li>
+    <li>Memperkuat koordinasi & membantu pencapaian tujuan organisasi</li>
+    <li>Dalam tim: memudahkan koordinasi, pembagian tugas jelas, kolaborasi meningkat, konflik berkurang, kepercayaan antaranggota terbangun</li>
+  </ul>
+  `
+},
+{
+  id:"wawancara",
+  title:"Komunikasi dalam Wawancara",
+  tag:"Bab 3",
+  lead:"Teknik komunikasi efektif saat wawancara kerja.",
+  html:`
+  <h3>Latar Belakang</h3>
+  <div class="card">Keberhasilan wawancara tidak hanya ditentukan kemampuan menjawab, tapi juga kemampuan berkomunikasi efektif untuk menciptakan interaksi yang jelas, profesional, dan nyaman.</div>
+
+  <h3>Pengertian Komunikasi (KBBI)</h3>
+  <div class="card">Proses pengiriman & penerimaan informasi antara dua pihak atau lebih sehingga pesan dapat dipahami — melibatkan pengirim, penerima, dan saluran komunikasi.</div>
+
+  <h3>Jenis Komunikasi dalam Wawancara</h3>
+  <div class="grid">
+    <div class="card"><b>Verbal</b> — penggunaan kata-kata dalam pertanyaan & jawaban</div>
+    <div class="card"><b>Non-Verbal</b> — ekspresi wajah, kontak mata, postur tubuh, gestur</div>
+    <div class="card"><b>Paraverbal</b> — nada suara, intonasi, kecepatan bicara</div>
+  </div>
+
+  <h3>Teknik Komunikasi Verbal Efektif</h3>
+  <ul>
+    <li><b>Metode STAR</b> — Situasi-Tugas-Aksi-Hasil akhir</li>
+    <li>Kalimat aktif & positif, fokus kontribusi personal</li>
+    <li>Bahasa mudah dipahami, sederhanakan istilah teknis</li>
+    <li>Artikulasi & tempo stabil, gunakan jeda untuk berpikir</li>
+  </ul>
+
+  <h3>Teknik Non-Verbal Penting</h3>
+  <ul>
+    <li>Kontak mata fokus & sopan</li>
+    <li>Postur active sitting (tegak, condong ke depan)</li>
+    <li>Gestur tangan terbuka, hindari gerakan gelisah</li>
+    <li>Ekspresi wajah ramah, senyum & anggukan</li>
+  </ul>
+
+  <h3>Teknik Paraverbal</h3>
+  <ul>
+    <li>Mengatur tempo bicara & volume suara</li>
+    <li>Memperhatikan intonasi, penekanan kata penting</li>
+    <li>Melakukan jeda bicara</li>
+  </ul>
+
+  <h3>Hambatan Komunikasi dalam Wawancara</h3>
+  <ul>
+    <li><b>Psikologis</b> — gangguan dari faktor internal individu</li>
+    <li><b>Semantik</b> — perbedaan pemahaman kata, ambiguitas</li>
+    <li><b>Kognitif</b> — prasangka berdasarkan informasi yang memengaruhi komunikasi</li>
+    <li><b>Teknologi</b> — masalah saat menggunakan teknologi untuk komunikasi</li>
+  </ul>
+
+  <h3>Strategi Mengatasi Hambatan</h3>
+  <ul>
+    <li>Menggunakan bahasa yang jelas</li>
+    <li>Melakukan klarifikasi</li>
+    <li>Mengelola emosi dan rasa gugup</li>
+    <li>Menyesuaikan komunikasi verbal & nonverbal</li>
+  </ul>
+
+  <h3>Praktik Terbaik dalam Wawancara</h3>
+  <ul>
+    <li>Persiapan sebelum wawancara</li>
+    <li>Mendengarkan secara aktif (active listening)</li>
+    <li>Memberikan jawaban relevan</li>
+    <li>Memperhatikan komunikasi nonverbal</li>
+    <li>Menutup wawancara secara profesional</li>
+  </ul>
+
+  <h3>Pertanyaan Umum dalam Wawancara & Cara Menjawab</h3>
+  <ul>
+    <li><b>"Ceritakan tentang diri Anda"</b> — ringkas, fokus pada pengalaman relevan dengan posisi</li>
+    <li><b>"Apa kelebihan & kekurangan Anda?"</b> — jujur, sertakan upaya perbaikan diri</li>
+    <li><b>"Mengapa kami harus merekrut Anda?"</b> — hubungkan keahlian dengan kebutuhan perusahaan</li>
+    <li><b>"Di mana Anda 5 tahun lagi?"</b> — tunjukkan ambisi realistis & selaras dengan jalur karier</li>
+  </ul>
+
+  <h3>Riset Sebelum Wawancara</h3>
+  <div class="card">Pelamar yang meriset profil perusahaan, budaya kerja, dan deskripsi posisi sebelum wawancara cenderung memberikan jawaban lebih kontekstual dan menunjukkan minat yang genuine kepada pewawancara.</div>
+
+  <h3>Studi Kasus: Efektif vs Tidak Efektif</h3>
+  <table>
+    <tr><th>Aspek</th><th>✓ Efektif</th><th>✗ Tidak Efektif</th></tr>
+    <tr><td>Pertanyaan</td><td>Spesifik, terstruktur, mudah dipahami</td><td>Ambigu, berbelit-belit</td></tr>
+    <tr><td>Kontak Mata</td><td>Konsisten, perhatian penuh</td><td>Menghindar/menatap berlebihan</td></tr>
+    <tr><td>Mendengarkan</td><td>Aktif, mencatat, konfirmasi</td><td>Pasif, mudah teralihkan</td></tr>
+    <tr><td>Nada Bicara</td><td>Ramah, profesional, bervariasi</td><td>Monoton, terburu-buru</td></tr>
+    <tr><td>Bahasa</td><td>Sederhana, tepat, kontekstual</td><td>Terlalu teknis/informal</td></tr>
+    <tr><td>Penutupan</td><td>Ringkasan jelas + tindak lanjut</td><td>Berhenti tiba-tiba</td></tr>
+  </table>
+
+  <h3>Strategi Mengatasi Grogi</h3>
+  <ul>
+    <li>1. Tarik napas sebelum menjawab</li>
+    <li>2. Fokus pada isi jawaban</li>
+    <li>3. Gunakan metode poin-poin</li>
+    <li>4. Jaga kontak mata & postur tubuh</li>
+    <li>5. Bicara dengan kecepatan sedang</li>
+    <li>6. Latihan simulasi interview</li>
+  </ul>
+
+  <h3>Pertanyaan untuk Pewawancara (Saat Sesi Tanya Balik)</h3>
+  <ul>
+    <li>Menanyakan budaya kerja tim & gaya kepemimpinan atasan</li>
+    <li>Menanyakan ekspektasi kinerja di 3-6 bulan pertama</li>
+    <li>Menunjukkan inisiatif & ketertarikan mendalam pada posisi</li>
+  </ul>
+
+  <h3>Kesimpulan</h3>
+  <div class="card">Keseimbangan komunikasi verbal, non-verbal, dan paraverbal membantu menciptakan interaksi yang baik. Active listening & persiapan matang meningkatkan kualitas informasi yang diperoleh sehingga wawancara berjalan lancar dan profesional.</div>
+  `
+},
+{
+  id:"publicspeaking",
+  title:"Public Speaking",
+  tag:"Bab 4",
+  lead:"Keterampilan berbicara di depan umum sebagai keterampilan komunikasi modern.",
+  html:`
+  <h3>Latar Belakang</h3>
+  <div class="card">Tuntutan komunikasi modern menuntut kemampuan menyampaikan ide secara jelas & meyakinkan. Masalah yang sering dihadapi: gugup, tidak percaya diri, takut berbicara di depan umum. Penguasaan public speaking berdampak pada peningkatan kepercayaan diri, kemampuan memengaruhi audiens, dan efektivitas penyampaian pesan.</div>
+
+  <h3>Pengertian</h3>
+  <div class="card">Public speaking adalah proses berbicara di depan umum/khalayak untuk menyampaikan informasi, menghibur, dan memengaruhi audiens (Zainal, 2022). Secara etimologi, <i>public</i> berarti masyarakat umum, <i>speaking</i> berarti berbicara/berpidato.</div>
+
+  <h3>Pentingnya Public Speaking</h3>
+  <div class="card">Membantu meningkatkan kepercayaan diri, memperkuat komunikasi efektif, memudahkan penyampaian ide secara persuasif, melatih berpikir cepat, beradaptasi dengan situasi, membangun jaringan profesional, dan memengaruhi audiens secara positif.</div>
+
+  <h3>Unsur Public Speaking</h3>
+  <ul>
+    <li><b>Komunikasi Verbal</b> — kata-kata & bahasa jelas (mis. berbicara jelas saat presentasi)</li>
+    <li><b>Komunikasi Nonverbal</b> — bahasa tubuh, ekspresi, gerakan (mis. menatap audiens)</li>
+    <li><b>Vokal & Suara</b> — intonasi, volume, kejelasan suara</li>
+    <li><b>Penguasaan Pesan & Materi</b> — menjelaskan tanpa membaca teks</li>
+    <li><b>Kemampuan Mempengaruhi & Membangun Hubungan</b> — mengajak audiens bertanya/berdiskusi</li>
+  </ul>
+
+  <h3>Jenis Public Speaking</h3>
+  <ul>
+    <li><b>Informative speech</b> — menyampaikan informasi/pengetahuan (presentasi materi, hasil penelitian)</li>
+    <li><b>Persuasive speech</b> — memengaruhi/mengajak audiens (ajakan jaga lingkungan, kampanye anti narkoba)</li>
+    <li><b>Entertaining speech</b> — menghibur audiens (sambutan lucu, MC acara hiburan)</li>
+  </ul>
+
+  <h3>Teknik Dasar Public Speaking</h3>
+  <ul>
+    <li>Kuasai materi yang akan disampaikan</li>
+    <li>Gunakan suara jelas & cukup keras</li>
+    <li>Atur intonasi agar tidak monoton</li>
+    <li>Jaga kontak mata dengan audiens</li>
+    <li>Berbicara dengan tempo sesuai</li>
+    <li>Latihan sebelum tampil</li>
+  </ul>
+
+  <h3>Bahasa Tubuh dalam Public Speaking</h3>
+  <div class="grid">
+    <div class="card"><b>Praktik baik:</b> berdiri tegak & percaya diri, gestur tangan wajar, tersenyum, kontak mata, hindari gerakan berlebihan</div>
+    <div class="card"><b>Manfaat:</b> penyampaian pesan lebih efektif, menarik perhatian audiens, meningkatkan kredibilitas pembicara</div>
+  </div>
+
+  <h3>Hambatan Public Speaking</h3>
+  <ul>
+    <li>Rasa gugup/kurang percaya diri</li>
+    <li>Kurangnya persiapan materi</li>
+    <li>Kesulitan mengatur suara & intonasi</li>
+    <li>Gangguan dari lingkungan sekitar</li>
+    <li>Kurangnya interaksi dengan audiens</li>
+  </ul>
+  <div class="card"><b>Dampak:</b> pesan tidak tersampaikan baik, audiens kehilangan perhatian, presentasi kurang efektif.</div>
+
+  <h3>Cara Mengatasi Gugup</h3>
+  <ul>
+    <li>Berlatih di depan cermin/teman</li>
+    <li>Mempersiapkan materi sebelum tampil</li>
+    <li>Mengatur pernapasan untuk menenangkan diri</li>
+    <li>Berpikir positif saat berbicara di depan umum</li>
+  </ul>
+
+  <h3>Struktur Pidato/Presentasi yang Efektif</h3>
+  <ul>
+    <li><b>Pembukaan</b> — hook menarik (cerita, fakta mengejutkan, pertanyaan retoris)</li>
+    <li><b>Isi</b> — maksimal 3 poin utama, didukung contoh & data</li>
+    <li><b>Penutup</b> — rangkuman + call to action yang jelas & berkesan</li>
+  </ul>
+
+  <h3>Teknik Mengelola Kecemasan Panggung (Stage Fright)</h3>
+  <div class="card">Kecemasan panggung adalah respons alami tubuh terhadap situasi yang dipersepsikan sebagai ancaman. Teknik <b>visualisasi positif</b> (membayangkan presentasi berjalan lancar) dan <b>power posing</b> sebelum tampil terbukti membantu menurunkan tingkat kecemasan pembicara pemula.</div>
+
+  <h3>Studi Kasus: Presentasi iPhone oleh Steve Jobs (2007)</h3>
+  <table>
+    <tr><th>Aspek</th><th>Penerapan Steve Jobs</th></tr>
+    <tr><td>Storytelling</td><td>Membangun rasa penasaran audiens sebelum memperkenalkan iPhone</td></tr>
+    <tr><td>Penyampaian Pesan</td><td>Bahasa sederhana & mudah dipahami</td></tr>
+    <tr><td>Bahasa Tubuh</td><td>Kontak mata, gestur alami, sikap percaya diri</td></tr>
+    <tr><td>Media Presentasi</td><td>Slide sederhana, tidak terlalu banyak teks</td></tr>
+    <tr><td>Dampak</td><td>Menarik perhatian & meningkatkan antusiasme terhadap produk</td></tr>
+  </table>
+
+  <h3>Pentingnya Kepercayaan Diri</h3>
+  <ul>
+    <li>Keyakinan terhadap kemampuan diri</li>
+    <li>Membantu berbicara lebih jelas & tenang, mengurangi gugup</li>
+    <li>Meningkatkan kepercayaan audiens</li>
+    <li>Membantu menghadapi pertanyaan atau kritik</li>
+  </ul>
+
+  <h3>Persiapan Berbicara di Depan Umum</h3>
+  <ul>
+    <li>Mengenali audiens agar penyampaian tepat sasaran</li>
+    <li>Menyusun kerangka pembicaraan secara terstruktur</li>
+    <li>Melakukan latihan (practice)</li>
+    <li>Mempersiapkan diri secara mental & fisik</li>
+  </ul>
+
+  <h3>Strategi "Percaya Diri Bukan Tidak Gugup"</h3>
+  <ul>
+    <li>Menguasai materi dan situasi</li>
+    <li>Mengendalikan emosi di bawah tekanan</li>
+    <li>Membangun kredibilitas melalui kejujuran</li>
+    <li>Fokus pada solusi, bukan alasan</li>
+  </ul>
+
+  <h3>Tips Public Speaking</h3>
+  <ul>
+    <li>Latihan sebelum tampil, atur napas untuk mengurangi gugup</li>
+    <li>Jaga kontak mata, gunakan bahasa tubuh terbuka & percaya diri</li>
+    <li>Intonasi jelas, tidak terburu-buru</li>
+    <li>Beri jeda sebelum menjawab pertanyaan sulit</li>
+    <li>Berpikir positif, fokus pada pesan</li>
+  </ul>
+
+  <h3>Komunikasi Efektif dalam Situasi Kritik & Pertanyaan Tajam</h3>
+  <div class="card">Strategi matang menghadapi situasi krusial: memahami kritik, mengklarifikasi dengan tepat, menjawab taktis, serta menjaga kredibilitas & reputasi profesional.</div>
+  <div class="grid">
+    <div class="card"><b>Do's</b>
+      <ul>
+        <li>Dengarkan tanpa menyela</li>
+        <li>Gunakan pertanyaan terbuka ("apa", "bagaimana")</li>
+        <li>Refleksikan kembali (paraphrase) inti pesan</li>
+        <li>Konfirmasi tindak lanjut perbaikan bersama</li>
+      </ul>
+    </div>
+    <div class="card"><b>Don'ts</b>
+      <ul>
+        <li>Langsung defensif</li>
+        <li>Menyela pembicaraan</li>
+        <li>Pocket veto (mengangguk tapi tak melakukan perbaikan)</li>
+        <li>Terjebak emosi negatif terlalu lama</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Menjawab Pertanyaan dengan Teknik ACRB</h3>
+  <ul>
+    <li><b>Acknowledge</b> — akui & validasi penanya. "Pertanyaan bagus, terima kasih."</li>
+    <li><b>Clarify</b> — parafrase pertanyaan agar jelas. "Apakah terkait metode atau hasilnya?"</li>
+    <li><b>Respond</b> — jawaban ringkas, objektif, didukung data valid. "Data survei internal margin error 5%."</li>
+    <li><b>Bridge</b> — hubungkan kembali ke pesan utama. "Ini sejalan dengan tren peningkatan..."</li>
+  </ul>
+
+  <h3>Menjaga Kredibilitas Profesional</h3>
+  <div class="grid">
+    <div class="card"><b>Do's</b>
+      <ul>
+        <li>Jujur jika tidak tahu, tawarkan tindak lanjut</li>
+        <li>Batasi penanya dominan secara sopan</li>
+        <li>Kendalikan batas durasi & relevansi topik</li>
+        <li>Miliki kedewasaan emosional</li>
+      </ul>
+    </div>
+    <div class="card"><b>Don'ts</b>
+      <ul>
+        <li>Berbohong/mengarang jawaban</li>
+        <li>Bertanya "apakah sudah menjawab?" (memancing perdebatan)</li>
+        <li>Membiarkan satu penanya menghabiskan waktu</li>
+        <li>Terpancing marah/defensif</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Kesalahan yang Harus Dihindari</h3>
+  <ul>
+    <li>Minim persiapan atau tidak berlatih sama sekali</li>
+    <li>Mengabaikan bahasa tubuh & kontak mata</li>
+    <li>Menggunakan filler words berlebihan</li>
+    <li>Tidak memperhatikan profil audiens</li>
+    <li>Membaca terus dari slide presentasi</li>
+  </ul>
+
+  <h3>Menggunakan Storytelling dalam Public Speaking</h3>
+  <div class="card">Cerita personal yang relevan membantu audiens berempati dan mengingat pesan lebih lama dibanding sekadar pemaparan data. Struktur storytelling sederhana: situasi awal → konflik/tantangan → resolusi → pesan moral.</div>
+
+  <h3>Kesimpulan</h3>
+  <div class="quote">Public speaking bukanlah bakat bawaan, melainkan keterampilan yang dibangun melalui persiapan matang, pola pikir percaya diri, dan teknik yang terstruktur. Komunikasi efektif tidak hanya soal apa yang disampaikan, tapi bagaimana mengelola situasi kritis, tetap jujur, dan menjaga kredibilitas.</div>
+  `
+},
+{
+  id:"presentasi",
+  title:"Presentasi Menarik & Persuasif",
+  tag:"Bab 5",
+  lead:"Strategi membuat presentasi yang menarik perhatian dan memengaruhi audiens.",
+  html:`
+  <h3>Apa itu Presentasi Menarik & Persuasif?</h3>
+  <div class="grid">
+    <div class="card"><b>Presentasi Menarik</b> — mampu menarik perhatian audiens sejak awal dan membuat mereka tetap fokus selama penyampaian materi. Ciri: mudah dipahami, interaktif, berkesan & mudah diingat.</div>
+    <div class="card"><b>Presentasi Persuasif</b> — dirancang untuk memengaruhi cara berpikir audiens dan mendorong tindakan/keputusan. Ciri: argumen kuat, meyakinkan audiens, mendorong tindakan.</div>
+  </div>
+
+  <h3>Mengapa Kemampuan Presentasi Penting?</h3>
+  <ul>
+    <li>Meningkatkan rasa percaya diri</li>
+    <li>Menyampaikan ide dengan jelas</li>
+    <li>Melatih berbicara di depan umum</li>
+    <li>Mendukung kerja sama tim</li>
+  </ul>
+
+  <h3>Landasan Retorika Klasik Aristotelian</h3>
+  <div class="card">Konsep dari Aristoteles (abad ke-4 SM) yang menjadi dasar persuasi efektif hingga kini.</div>
+  <ul>
+    <li><b>Ethos</b> — kredibilitas dan karakter pembicara; audiens lebih percaya pada sumber yang kredibel.</li>
+    <li><b>Pathos</b> — emosi lewat storytelling; menyentuh perasaan audiens (mis. kisah investor memilih pebisnis berdasarkan cerita yang menggugah).</li>
+    <li><b>Logos</b> — data, fakta, atau nalar logis sebagai dasar argumen.</li>
+  </ul>
+
+  <h3>Memori & Kerja Otak Audiens</h3>
+  <div class="card">Studi Microsoft (2015) menunjukkan rentang fokus manusia menurun seiring waktu — sehingga presentasi perlu efisien dan ringkas agar tidak kehilangan perhatian audiens.</div>
+  <ul>
+    <li><b>Kapasitas Memori Kerja</b> — otak hanya bisa menampung 3-4 poin (maksimum chunks informasi) dalam satu waktu</li>
+    <li>Kalimat panjang merusak fokus & berisiko membuat informasi penting terlupakan</li>
+  </ul>
+
+  <h3>Mengapa Teks Panjang Gagal ("Death by PPT")</h3>
+  <ul>
+    <li><b>Overload</b> — terlalu banyak teks paragraf</li>
+    <li><b>Distraksi</b> — audiens bingung antara membaca atau mendengarkan</li>
+    <li><b>Lelah</b> — energi otak audiens cepat habis</li>
+  </ul>
+  <div class="quote">"Jika audiens dipaksa membaca tulisan panjang di slide saat mendengarkan Anda berbicara, mereka akan melewatkan salah satunya secara instan." — John Sweller, Pengembang Teori Beban Kognitif</div>
+
+  <h3>Tips Desain Slide Efektif</h3>
+  <ul>
+    <li><b>Signalling</b> — sorot poin utama dengan kontras</li>
+    <li><b>Koherensi</b> — singkirkan dekorasi tidak penting</li>
+    <li><b>Kontiguitas</b> — dekatkan teks penjelas langsung ke visual</li>
+  </ul>
+
+  <h3>Alur Kerja Reduksi Beban Kognitif</h3>
+  <ul>
+    <li>1. <b>Kurasi Teks</b> — fokus pada ide pokok, buang sisanya</li>
+    <li>2. <b>Konseptualisasi</b> — wakili gagasan lewat visual/diagram</li>
+    <li>3. <b>Tata Letak</b> — satukan teks penjelas dan grafis</li>
+    <li>4. <b>Pengujian</b> — slide harus bisa dipahami dalam 3 detik</li>
+  </ul>
+
+  <h3>Struktur Presentasi Persuasif: Model AIDA</h3>
+  <ul>
+    <li><b>Attention</b> — tarik perhatian dengan pembuka kuat</li>
+    <li><b>Interest</b> — bangun minat lewat relevansi masalah audiens</li>
+    <li><b>Desire</b> — tunjukkan manfaat/solusi yang ditawarkan</li>
+    <li><b>Action</b> — ajak audiens mengambil tindakan nyata</li>
+  </ul>
+
+  <h3>Penggunaan Visual & Storytelling Data</h3>
+  <div class="card">Visualisasi data (grafik, infografis) membantu audiens memahami informasi kompleks lebih cepat dibanding tabel angka mentah. Prinsip <b>satu pesan per slide</b> memastikan setiap visual punya fokus yang jelas.</div>
+
+  <h3>Hal yang Harus Diperhatikan dalam Presentasi</h3>
+  <div class="grid">
+    <div class="card"><b>Yang harus ada</b>
+      <ul>
+        <li>Materi jelas dan terstruktur</li>
+        <li>Visual yang efektif</li>
+        <li>Bahasa mudah dipahami</li>
+        <li>Didukung data dan fakta valid</li>
+      </ul>
+    </div>
+    <div class="card"><b>Yang harus dihindari</b>
+      <ul>
+        <li>Membaca terus menerus dari slide</li>
+        <li>Tidak melibatkan audiens</li>
+        <li>Terlalu banyak teks</li>
+        <li>Desain slide terlalu ramai</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Kesimpulan</h3>
+  <div class="quote">Presentasi yang menarik dan persuasif tidak hanya bergantung pada isi materi, tetapi juga cara penyampaian, penggunaan visual efektif, serta kemampuan menarik perhatian audiens. Dengan memanfaatkan unsur ethos, pathos, dan logos, serta menyusun slide yang jelas dan tidak berlebihan, pesan dapat dipahami, diingat, dan memengaruhi audiens.</div>
+  `
+}
+];
+
+const navlist = document.getElementById('navlist');
+const main = document.getElementById('main');
+
+data.forEach((d,i)=>{
+  const btn = document.createElement('button');
+  btn.textContent = d.title;
+  btn.onclick = ()=> showSection(d.id);
+  btn.id = 'nav-'+d.id;
+  navlist.appendChild(btn);
+
+  const sec = document.createElement('section');
+  sec.id = d.id;
+  sec.innerHTML = `
+    <span class="tag">${d.tag}</span>
+    <h2>${d.title}</h2>
+    <p class="lead">${d.lead}</p>
+    ${d.html}
+    <div class="footer-nav">
+      <button onclick="${i>0 ? `showSection('${data[i-1].id}')` : 'void(0)'}" ${i===0?'style="visibility:hidden"':''}>← Sebelumnya</button>
+      <button onclick="${i<data.length-1 ? `showSection('${data[i+1].id}')` : 'void(0)'}" ${i===data.length-1?'style="visibility:hidden"':''}>Selanjutnya →</button>
+    </div>
+  `;
+  main.appendChild(sec);
+});
+
+function showSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.getElementById('nav-'+id).classList.add('active');
+  window.scrollTo(0,0);
+  document.querySelector('nav').classList.remove('open');
+}
+showSection(data[0].id);
+</script>
+</body>
+</html>
